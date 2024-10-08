@@ -38,24 +38,22 @@ app.append(cookieDiv);
 
 //milk button counter
 milkButton.addEventListener("click", () => {
-    milkCounter += 1;
-    if(milkCounter === 1){
-        milkDivText.textContent = `${milkCounter} glass of milk`;
-    }
-    else{
+  milkCounter += 1;
+  if (milkCounter === 1) {
+    milkDivText.textContent = `${milkCounter} glass of milk`;
+  } else {
     milkDivText.textContent = `${milkCounter} glasses of milk`;
-    }
+  }
 });
 
 //cookie button counter
 cookieButton.addEventListener("click", () => {
-    if(milkCounter != 0){
-        cookieCounter += 1;
-        if (cookieCounter === 1){
-            cookieDivText.textContent = `${cookieCounter} cookie`;
-        }
-        else{
-        cookieDivText.textContent = `${cookieCounter} cookies`
-        }
+  if (milkCounter != 0) {
+    cookieCounter += 1;
+    if (cookieCounter === 1) {
+      cookieDivText.textContent = `${cookieCounter} cookie`;
+    } else {
+      cookieDivText.textContent = `${cookieCounter} cookies`;
     }
+  }
 });
