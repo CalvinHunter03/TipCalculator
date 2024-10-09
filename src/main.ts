@@ -11,6 +11,7 @@ app.append(header);
 
 let milkCounter: number = 0;
 let cookieCounter: number = 0;
+let lastTimestamp: number | null = null; // To track the time of the last frame
 
 //Milk button
 const milkButtonName = "🥛";
@@ -70,6 +71,7 @@ const autoCookieButton = document.createElement("button");
 autoCookieButton.innerHTML = autoCookieButtonName;
 app.append(autoCookieButton);
 
+/*
 setInterval(() => {
   milkCounter += 1;
   if (milkCounter === 1) {
@@ -78,3 +80,29 @@ setInterval(() => {
     milkDivText.textContent = `${milkCounter} glasses of milk`;
   }
 }, 1000);
+*/
+
+function updateCounter(timestamp: number) {
+  if (lastTimestamp === null) {
+    lastTimestamp = timestamp;
+  }
+
+  // Calculate the time difference between frames (in seconds)
+  const deltaTime = (timestamp - lastTimestamp) / 1000; // Convert to seconds
+  lastTimestamp = timestamp;
+
+  // Increment the counter by the amount that should have passed in the elapsed time
+  milkCounter += deltaTime; // This ensures 1 unit increase per second
+
+  // Update the display
+  if (milkCounter === 1) {
+    milkDivText.textContent = `${milkCounter} glass of milk`;
+  } else {
+    milkDivText.textContent = `${milkCounter} glasses of milk`;
+  }
+  // Request the next animation frame
+  requestAnimationFrame(updateCounter);
+}
+
+// Start the animation loop
+requestAnimationFrame(updateCounter);
