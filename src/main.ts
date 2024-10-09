@@ -57,3 +57,24 @@ cookieButton.addEventListener("click", () => {
     }
   }
 });
+
+//auto click milk button
+const autoMilkButtonName = "Auto Click 🥛";
+const autoMilkButton = document.createElement("button");
+autoMilkButton.innerHTML = autoMilkButtonName;
+app.append(autoMilkButton);
+
+//auto click cookie button
+const autoCookieButtonName = "Auto Click 🍪";
+const autoCookieButton = document.createElement("button");
+autoCookieButton.innerHTML = autoCookieButtonName;
+app.append(autoCookieButton);
+
+setInterval(() => {
+  milkCounter += 1;
+  if (milkCounter === 1) {
+    milkDivText.textContent = `${milkCounter} glass of milk`;
+  } else {
+    milkDivText.textContent = `${milkCounter} glasses of milk`;
+  }
+}, 1000);
