@@ -9,7 +9,7 @@ const header = document.createElement("h1");
 header.innerHTML = gameName;
 app.append(header);
 
-let milkCounter: number = 1000;
+let milkCounter: number = 0;
 let growthRate: number = 0;
 
 let lastSmallMilkTime: number = performance.now();
@@ -71,56 +71,66 @@ function updateGrowthRate() {
   growthRateDiv.textContent = `Growth rate: ${Math.round(growthRate * 100) / 100} milk/sec`;
 }
 
-function toggleButtons() {
-  autoSmallMilkButton.disabled = milkCounter < 10;
-  autoMedMilkButton.disabled = milkCounter < 100;
-  autoLargeMilkButton.disabled = milkCounter < 1000;
+interface Item {
+  name: string;
+  cost: number;
+  rate: number;
 }
 
-const autoSmallMilkButton = createAutoMilkButton("Cows 🐄", 10, 0.1, 1);
-const autoMedMilkButton = createAutoMilkButton("Goat 🐐", 100, 2.0, 2);
-const autoLargeMilkButton = createAutoMilkButton("Buffalo 🐃", 1000, 50.0, 3);
+const availableItems: Item[] = [
+  { name: "Cows 🐄", cost: 10, rate: 0.1 },
+  { name: "Goat 🐐", cost: 100, rate: 2.0 },
+  { name: "Buffalo 🐃", cost: 1000, rate: 50 },
+];
 
-function createAutoMilkButton(
-  name: string,
-  initialPrice: number,
-  rate: number,
-  id: number,
-) {
-  let price = initialPrice;
+const autoMilkButtons: HTMLButtonElement[] = [];
+
+availableItems.forEach((item, index) => {
+  const button = createAutoMilkButton(item, index + 1);
+  autoMilkButtons.push(button);
+});
+
+function toggleButtons() {
+  availableItems.forEach((item, index) => {
+    autoMilkButtons[index].disabled = milkCounter < item.cost;
+  });
+}
+
+function createAutoMilkButton(item: Item, id: number) {
+  let price = item.cost;
   const button = document.createElement("button");
-  button.innerHTML = `${name} (Cost: ${price.toFixed(2)})`;
+  button.innerHTML = `${item.name} (Cost: ${price.toFixed(2)})`;
   button.disabled = true;
   app.append(button);
 
   button.addEventListener("click", () => {
     if (milkCounter >= price) {
       milkCounter -= price;
-      growthRate += rate;
+      growthRate += item.rate;
       updateMilk();
       updateGrowthRate();
 
       price *= 1.15;
       price = Math.round(price * 100) / 100;
-      button.innerHTML = `${name} (Cost: ${price.toFixed(2)})`;
+      button.innerHTML = `${item.name} (Cost: ${price.toFixed(2)})`;
 
       switch (id) {
         case 1:
           smallButtonCounter++;
           requestAnimationFrame(() => {
-            animateMilk(rate, 1);
+            animateMilk(item.rate, 1);
           });
           break;
         case 2:
           medButtonCounter++;
           requestAnimationFrame(() => {
-            animateMilk(rate, 2);
+            animateMilk(item.rate, 2);
           });
           break;
         case 3:
           largeButtonCounter++;
           requestAnimationFrame(() => {
-            animateMilk(rate, 3);
+            animateMilk(item.rate, 3);
           });
           break;
       }
