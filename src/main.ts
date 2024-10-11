@@ -75,12 +75,35 @@ interface Item {
   name: string;
   cost: number;
   rate: number;
+  description: string;
 }
 
 const availableItems: Item[] = [
-  { name: "Cows 🐄", cost: 10, rate: 0.1 },
-  { name: "Goat 🐐", cost: 100, rate: 2.0 },
-  { name: "Buffalo 🐃", cost: 1000, rate: 50 },
+  { name: "Cows 🐄", cost: 10, rate: 0.1, description: "Auto generate milk" },
+  {
+    name: "Goat 🐐",
+    cost: 100,
+    rate: 2.0,
+    description: "Goats produce more milk!",
+  },
+  {
+    name: "Buffalo 🐃",
+    cost: 1000,
+    rate: 50,
+    description: "Buffalo gives the most milk!",
+  },
+  {
+    name: "Alien 👽",
+    cost: 2000,
+    rate: 100,
+    description: "Aliens with shower you in milk.",
+  },
+  {
+    name: "Saturn 🪐",
+    cost: 5000,
+    rate: 500,
+    description: "Planet full of milk?!",
+  },
 ];
 
 const autoMilkButtons: HTMLButtonElement[] = [];
@@ -99,7 +122,7 @@ function toggleButtons() {
 function createAutoMilkButton(item: Item, id: number) {
   let price = item.cost;
   const button = document.createElement("button");
-  button.innerHTML = `${item.name} (Cost: ${price.toFixed(2)})`;
+  button.innerHTML = `${item.name} (Cost: ${price.toFixed(2)}) (Info: ${item.description})`;
   button.disabled = true;
   app.append(button);
 
