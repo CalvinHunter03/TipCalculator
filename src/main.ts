@@ -77,46 +77,33 @@ function toggleButtons() {
   autoLargeMilkButton.disabled = milkCounter < 1000;
 }
 
-const autoSmallMilkButtonName = "Small Milk (Cost: 10, 0.1/sec)";
-const autoMedMilkButtonName = "Med Milk (Cost: 100, 2.0/sec)";
-const autoLargeMilkButtonName = "Large Milk (Cost: 1000, 50/sec)";
-
-const autoSmallMilkButton = createAutoMilkButton(
-  autoSmallMilkButtonName,
-  10,
-  0.1,
-  1,
-);
-const autoMedMilkButton = createAutoMilkButton(
-  autoMedMilkButtonName,
-  100,
-  2.0,
-  2,
-);
-const autoLargeMilkButton = createAutoMilkButton(
-  autoLargeMilkButtonName,
-  1000,
-  50,
-  3,
-);
+const autoSmallMilkButton = createAutoMilkButton("Small Milk", 10, 0.1, 1);
+const autoMedMilkButton = createAutoMilkButton("Medium Milk", 100, 2.0, 2);
+const autoLargeMilkButton = createAutoMilkButton("Large Milk", 1000, 50.0, 3);
 
 function createAutoMilkButton(
   name: string,
-  cost: number,
+  initialPrice: number,
   rate: number,
-  id: number,
+  id: number
 ) {
+  let price = initialPrice;
   const button = document.createElement("button");
-  button.innerHTML = name;
+  button.innerHTML = `${name} (Cost: ${price.toFixed(2)})`;
   button.disabled = true;
   app.append(button);
 
   button.addEventListener("click", () => {
-    if (milkCounter >= cost) {
-      milkCounter -= cost;
+    if (milkCounter >= price) {
+      milkCounter -= price;
       growthRate += rate;
       updateMilk();
       updateGrowthRate();
+
+      price *= 1.15;
+      price = Math.round(price * 100) / 100;
+      button.innerHTML = `${name} (Cost: ${price.toFixed(2)})`;
+
       switch (id) {
         case 1:
           smallButtonCounter++;
