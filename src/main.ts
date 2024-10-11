@@ -77,15 +77,15 @@ function toggleButtons() {
   autoLargeMilkButton.disabled = milkCounter < 1000;
 }
 
-const autoSmallMilkButton = createAutoMilkButton("Small Milk", 10, 0.1, 1);
-const autoMedMilkButton = createAutoMilkButton("Medium Milk", 100, 2.0, 2);
-const autoLargeMilkButton = createAutoMilkButton("Large Milk", 1000, 50.0, 3);
+const autoSmallMilkButton = createAutoMilkButton("Cows 🐄", 10, 0.1, 1);
+const autoMedMilkButton = createAutoMilkButton("Goat 🐐", 100, 2.0, 2);
+const autoLargeMilkButton = createAutoMilkButton("Buffalo 🐃", 1000, 50.0, 3);
 
 function createAutoMilkButton(
   name: string,
   initialPrice: number,
   rate: number,
-  id: number,
+  id: number
 ) {
   let price = initialPrice;
   const button = document.createElement("button");
