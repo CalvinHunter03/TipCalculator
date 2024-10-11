@@ -85,7 +85,7 @@ function createAutoMilkButton(
   name: string,
   initialPrice: number,
   rate: number,
-  id: number
+  id: number,
 ) {
   let price = initialPrice;
   const button = document.createElement("button");
