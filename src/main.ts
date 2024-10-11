@@ -85,26 +85,26 @@ const autoSmallMilkButton = createAutoMilkButton(
   autoSmallMilkButtonName,
   10,
   0.1,
-  1
+  1,
 );
 const autoMedMilkButton = createAutoMilkButton(
   autoMedMilkButtonName,
   100,
   2.0,
-  2
+  2,
 );
 const autoLargeMilkButton = createAutoMilkButton(
   autoLargeMilkButtonName,
   1000,
   50,
-  3
+  3,
 );
 
 function createAutoMilkButton(
   name: string,
   cost: number,
   rate: number,
-  id: number
+  id: number,
 ) {
   const button = document.createElement("button");
   button.innerHTML = name;
