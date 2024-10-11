@@ -11,7 +11,7 @@ app.append(header);
 
 let milkCounter: number = 0;
 let cookieCounter: number = 0;
-let lastTimestamp: number | null = null; // To track the time of the last frame
+let lastTime: number = performance.now();
 
 //Milk button
 const milkButtonName = "🥛";
@@ -40,85 +40,62 @@ app.append(cookieDiv);
 //milk button counter
 milkButton.addEventListener("click", () => {
   milkCounter += 1;
+  updateMilk();
+  toggleAutoMilkButton();
+});
+
+//cookie button counter
+cookieButton.addEventListener("click", () => {
+  if (milkCounter !== 0) {
+    cookieCounter += 1;
+    updateCookie();
+  }
+});
+
+//update milk text
+function updateMilk() {
   if (milkCounter === 1) {
     milkDivText.textContent = `${milkCounter} glass of milk`;
   } else {
     milkDivText.textContent = `${milkCounter} glasses of milk`;
   }
-  if (milkCounter < 10) {
-    autoMilkButton.disabled = true;
+}
+//update cookie text
+function updateCookie() {
+  if (cookieCounter === 1) {
+    cookieDivText.textContent = `${cookieCounter} cookie`;
   } else {
-    autoMilkButton.disabled = false;
+    cookieDivText.textContent = `${cookieCounter} cookies`;
   }
-});
-
-//cookie button counter
-cookieButton.addEventListener("click", () => {
-  if (milkCounter != 0) {
-    cookieCounter += 1;
-    if (cookieCounter === 1) {
-      cookieDivText.textContent = `${cookieCounter} cookie`;
-    } else {
-      cookieDivText.textContent = `${cookieCounter} cookies`;
-    }
-  }
-});
+}
 
 //auto click milk button
 const autoMilkButtonName = "Auto Click 🥛";
 const autoMilkButton = document.createElement("button");
 autoMilkButton.innerHTML = autoMilkButtonName;
+autoMilkButton.disabled = true;
 app.append(autoMilkButton);
 
-/*
-setInterval(() => {
-  milkCounter += 1;
-  if (milkCounter === 1) {
-    milkDivText.textContent = `${milkCounter} glass of milk`;
-  } else {
-    milkDivText.textContent = `${milkCounter} glasses of milk`;
-  }
-}, 1000);
-*/
-
-function updateCounter(timestamp: number) {
-  // milk auto clicker
-  if (lastTimestamp === null) {
-    lastTimestamp = timestamp;
-  }
-
-  // Calculate the time difference between frames (in seconds)
-  const deltaTime = (timestamp - lastTimestamp) / 1000; // Convert to seconds
-  lastTimestamp = timestamp;
-
-  // Increment the counter by the amount that should have passed in the elapsed time
-  milkCounter += deltaTime; // This ensures 1 unit increase per second
-
-  // Update the display
-  if (milkCounter === 1) {
-    milkDivText.textContent = `${milkCounter} glass of milk`;
-  } else {
-    milkDivText.textContent = `${milkCounter} glasses of milk`;
-  }
-  // Request the next animation frame
-  requestAnimationFrame(updateCounter);
+//toggel auto milk button on and off depending on how many milks are collected
+function toggleAutoMilkButton() {
+  autoMilkButton.disabled = milkCounter < 10;
 }
 
-// Start the animation loop
-//requestAnimationFrame(updateCounter);
+//atuo milk clikc working
+function animateAutoMilkButton() {
+  const currentTime = performance.now();
 
-//auto milk clicker button working
-autoMilkButton.addEventListener("click", () => {
-  if (milkCounter >= 10) {
-    autoMilkButton.disabled = false;
-    milkCounter -= 10;
-    if (milkCounter === 1) {
-      milkDivText.textContent = `${milkCounter} glass of milk`;
-    } else {
-      milkDivText.textContent = `${milkCounter} glasses of milk`;
+  if (!autoMilkButton.disabled) {
+    if (currentTime - lastTime >= 1000) {
+      milkCounter += 1;
+      updateMilk();
+      lastTime = currentTime;
     }
-    requestAnimationFrame(updateCounter);
   }
-});
 
-autoMilkButton.disabled = true;
+  requestAnimationFrame(animateAutoMilkButton);
+}
+
+autoMilkButton.addEventListener("click", () => {
+  requestAnimationFrame(animateAutoMilkButton);
+});
