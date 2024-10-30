@@ -99,7 +99,7 @@ const availableItems: Item[] = [
     description: "Aliens with shower you in milk.",
   },
   {
-    name: "Saturn 🪐",
+    name: "Milk Planet 🪐",
     cost: 5000,
     rate: 500,
     description: "Planet full of milk?!",
@@ -116,10 +116,16 @@ availableItems.forEach((item, index) => {
 function toggleButtons() {
   availableItems.forEach((item, index) => {
     autoMilkButtons[index].disabled = milkCounter < item.cost;
+    if (autoMilkButtons[index].disabled) {
+      autoMilkButtons[index].style.visibility = "hidden";
+    } else {
+      autoMilkButtons[index].style.visibility = "visible";
+    }
   });
 }
 
 function createAutoMilkButton(item: Item, id: number) {
+  let count = 0;
   let price = item.cost;
   const button = document.createElement("button");
   button.innerHTML = `${item.name} (Cost: ${price.toFixed(2)}) (Info: ${item.description})`;
@@ -127,6 +133,7 @@ function createAutoMilkButton(item: Item, id: number) {
   app.append(button);
 
   button.addEventListener("click", () => {
+    count++;
     if (milkCounter >= price) {
       milkCounter -= price;
       growthRate += item.rate;
@@ -135,7 +142,7 @@ function createAutoMilkButton(item: Item, id: number) {
 
       price *= 1.15;
       price = Math.round(price * 100) / 100;
-      button.innerHTML = `${item.name} (Cost: ${price.toFixed(2)})`;
+      button.innerHTML = `${item.name} (Cost: ${price.toFixed(2)}) (Info: ${item.description}) ${count}`;
 
       switch (id) {
         case 1:
